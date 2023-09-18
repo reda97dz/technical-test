@@ -1,7 +1,9 @@
 import { Button, Group, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useRouter } from "next/router";
 
 export function AddBookForm() {
+  const router = useRouter();
   const form = useForm({
     initialValues: {
       title: "",
@@ -12,8 +14,19 @@ export function AddBookForm() {
 
   type Form = typeof form.values;
 
-  function submitProject(values: Form) {
-    console.log(values);
+  async function submitProject(values: Form) {
+    const response = await fetch(`http://localhost:3000/books/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.status === 201) {
+      router.replace(router.asPath);
+      form.reset();
+    }
   }
 
   return (

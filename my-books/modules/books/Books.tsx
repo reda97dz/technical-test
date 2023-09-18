@@ -4,18 +4,21 @@ import { useStyles } from "./Books.styles";
 import { Book } from "@/modules/book";
 import { AddBook } from "@/modules/book/add-book/AddBook";
 
-export function Books() {
+interface BooksProps {
+  books: Book[];
+}
+
+export function Books(props: BooksProps) {
   const { classes } = useStyles();
+  const { books } = props;
+
+  const booksList = books.map((book) => <Book key={book.id} book={book} />);
+
   return (
     <Container my="md">
       <Container className={classes.container}>
         <AddBook />
-        <Book />
-        <Book />
-        <Paper h={350} w={300} withBorder></Paper>
-        <Paper h={350} w={300} withBorder></Paper>
-        <Paper h={350} w={300} withBorder></Paper>
-        <Paper h={350} w={300} withBorder></Paper>
+        {booksList}
       </Container>
     </Container>
   );
